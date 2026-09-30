@@ -2,8 +2,8 @@
 
 try {
     include_once __DIR__ . '/borrowers_info_class.php';
-    $student_info = new BorrowersInfo();
-    $students = $student_info->show_students();
+    $borrowers_info = new BorrowersInfo();
+    $borrowers = $borrowers_info->show_borrowers();
 }catch(\PDOException $e){
     header("Location: error_page.php");
     exit;
@@ -60,8 +60,8 @@ try {
             </tr>
             </thead>
             <tbody>
-                <?php if ($students && count($students) > 0): ?>
-                <?php foreach ($students as $row): ?>           
+                <?php if ($borrowers && count($borrowers) > 0): ?>
+                <?php foreach ($borrowers as $row): ?>           
                 <tr>
                     <td><?= htmlspecialchars($row->borrower_no) ?></td>
                     <td><?= htmlspecialchars($row->first_name) ?></td>

@@ -49,7 +49,7 @@
             $user = $stmt->fetchAll(PDO::FETCH_OBJ);
             return $user;
         }
-        public function show_students() {
+        public function show_borrowers() {
             $sql = "SELECT * FROM {$this->query_config['tables']['borrowers']}";
             $stmt = $this->pdo->prepare($sql);          
             $stmt->execute();
