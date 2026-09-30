@@ -1,0 +1,329 @@
+/* rent_info_style.css */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background-image: url("../assets/img/bg_pic.jpg"); 
+    background-position: center;
+    background-size: cover;
+    background-attachment: fixed; 
+    font-family: 'Inter', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    backdrop-filter: blur(4px);
+}
+
+/* Page Wrapper */
+.student.form {
+    display: flex;
+    justify-content: center;
+    padding: 40px 16px;
+}
+
+/* Main Form Card */
+.container {
+    width: min(980px, 100%);
+    background: #ced28ca7; /* Translucent Olive-Beige from reference */
+    border-radius: 24px;
+    box-shadow: 0 24px 60px rgba(28, 42, 84, 0.12);
+    padding: 36px 40px;
+    backdrop-filter: blur(4px); /* Adds a nice glass effect to the translucency */
+}
+
+/* Navigation Header */
+.page-header {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 26px;
+}
+
+.page-nav {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+.page-nav .nav-link {
+    padding: 10px 20px;
+    border-radius: 9999px;
+    background: #f8f9ff;
+    color: #2d3a67;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: transform 0.18s ease, background-color 0.18s ease;
+    border: 1px solid rgba(0,0,0,0.05);
+}
+
+.page-nav .nav-link:hover {
+    transform: translateY(-1px);
+    background: #ffffff;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+/* Typography */
+.container h1 {
+    margin: 0 0 32px;
+    font-size: clamp(1.7rem, 2.5vw, 2.3rem);
+    letter-spacing: -0.02em;
+    color: #0f1941;
+    border-bottom: 2px solid rgba(15, 25, 65, 0.1);
+    padding-bottom: 12px;
+}
+
+/* Form Groups */
+.field-group {
+    margin-bottom: 24px;
+}
+
+.field-group label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: #2d3a67;
+}
+
+/* Grid Layout for Inputs */
+.field-row {
+    display: grid;
+    gap: 16px;
+    grid-template-columns: 1fr; /* Stacked for single inputs, but follows reference grid logic */
+    align-items: center;
+}
+
+/* Input Styling */
+input[type="number"] {
+    width: 100%;
+    min-height: 52px;
+    padding: 14px 16px;
+    border: 1px solid #d9dbe9;
+    border-radius: 14px;
+    background: #f8f9ff;
+    color: #1d2438;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+}
+
+input[type="radio"] {
+    margin-right: 8px;
+    cursor: pointer;
+}
+
+input:focus {
+    outline: none;
+    border-color: #5060f2;
+    box-shadow: 0 0 0 4px rgba(80, 96, 242, 0.12);
+    background: #ffffff;
+}
+
+/* Buttons Section */
+.button-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    justify-content: flex-start;
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(0,0,0,0.05);
+}
+
+button {
+    min-width: 160px;
+    padding: 14px 28px;
+    border: none;
+    border-radius: 14px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.18s ease;
+}
+
+button#submit {
+    background: rgba(62, 60, 43, 0.8); /* Dark Earthy Green from reference */
+    color: #ffffff;
+    box-shadow: 0 8px 20px rgba(62, 60, 43, 0.2);
+}
+
+button#submit:hover {
+    transform: translateY(-2px);
+    background: #484e26;
+    box-shadow: 0 12px 24px rgba(62, 60, 43, 0.3);
+}
+
+button#clear {
+    background: #f4f5ff;
+    color: #38416f;
+}
+
+button#clear:hover {
+    transform: translateY(-2px);
+    background: #e5e7ff;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 720px) {
+    .container {
+        padding: 28px 20px;
+    }
+
+    .button-row {
+        flex-direction: column;
+    }
+
+    button {
+        width: 100%;
+    }
+    
+    .page-header {
+        justify-content: center;
+    }
+}
+
+/* Two-Column Layout */
+.form-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 32px;
+    align-items: start;
+}
+
+/* Account Dashboard */
+.account-dashboard {
+    background: #ced28ca7;
+    border-radius: 24px;
+    box-shadow: 0 24px 60px rgba(28, 42, 84, 0.12);
+    padding: 28px 24px;
+    backdrop-filter: blur(4px);
+    height: fit-content;
+    position: sticky;
+    top: 60px;
+}
+
+.dashboard-header {
+    margin-bottom: 24px;
+    border-bottom: 2px solid rgba(15, 25, 65, 0.1);
+    padding-bottom: 12px;
+}
+
+.dashboard-header h2 {
+    margin: 0;
+    font-size: 1.3rem;
+    color: #0f1941;
+    letter-spacing: -0.01em;
+}
+
+.account-info {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.profile-picture {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 12px;
+}
+
+.profile-picture img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid rgba(15, 25, 65, 0.1);
+    box-shadow: 0 8px 20px rgba(15, 25, 65, 0.12);
+}
+
+.info-section {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.info-item label {
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #5a6370;
+}
+
+.info-item p {
+    margin: 0;
+    font-size: 0.95rem;
+    color: #0f1941;
+    font-weight: 500;
+}
+
+.dashboard-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 12px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(15, 25, 65, 0.1);
+}
+
+.dashboard-actions a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 11px 16px;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.18s ease;
+    border: none;
+}
+
+.edit-btn {
+    background: rgba(62, 60, 43, 0.8);
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(62, 60, 43, 0.15);
+}
+
+.edit-btn:hover {
+    transform: translateY(-1px);
+    background: #484e26;
+    box-shadow: 0 6px 16px rgba(62, 60, 43, 0.2);
+}
+
+.logout-btn {
+    background: #f4f5ff;
+    color: #38416f;
+    border: 1px solid rgba(56, 65, 111, 0.1);
+}
+
+.logout-btn:hover {
+    transform: translateY(-1px);
+    background: #e5e7ff;
+    box-shadow: 0 4px 12px rgba(56, 65, 111, 0.1);
+}
+
+/* Responsive Layout */
+@media (max-width: 1200px) {
+    .form-wrapper {
+        grid-template-columns: 1fr;
+    }
+    
+    .account-dashboard {
+        position: static;
+    }
+}
+
+@media (max-width: 720px) {
+    .form-wrapper {
+        gap: 24px;
+    }
+}
