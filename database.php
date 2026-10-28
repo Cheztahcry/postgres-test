@@ -5,10 +5,13 @@
         
         public function __construct(
         ){
-            $this->query_config = require __DIR__ . '/query_config.php';
-            $config = require __DIR__ . '/config.php';
-
-            $dsn = "pgsql:host={$config['host']};port={$config['port']};dbname={$config['dbname']}";
+            $host     = getenv('DB_HOST')     ?: 'db';
+            $port     = getenv('DB_PORT')     ?: '5432';
+            $dbname   = getenv('DB_NAME')     ?: 'db_borrowing';
+            $user     = getenv('DB_USER')     ?: 'postgres';
+            $password = getenv('DB_PASS')     ?: 'admin123';
+            $this->query_config = require_once __DIR__ . '/query_config.php';
+            $dsn = "pgsql:host=$host;port=$port;dbname=$dbname";
             $options = [
             PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
@@ -16,12 +19,12 @@
             ];
 
             try {
-                $this->pdo = new PDO($dsn, $config['user'], $config['password'], $options);
+                $this->pdo = new PDO($dsn, $user, $password, $options);
             }
             catch (\PDOException $e) {
                 throw new \PDOException($e->getMessage(), (int)$e->getCode());
-
             }
+            
         }
         public function create_table($table, array $column) {
             $fields = [];
@@ -75,9 +78,7 @@
                 } 
             catch (PDOException $e) {
                 throw $e;
-
         }
-        
         }
        public function filterData(array $input, array $allowedKeys) {
         // 1. Whitelist the keys

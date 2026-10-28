@@ -1,6 +1,6 @@
 <?php
-require_once __DIR__ . '/vendor/autoload.php';
-use Handlers\BorrowersHandler;
+require_once dirname(__DIR__, 1) . '/vendor/autoload.php';
+
 use Handlers\EquipmentsHandler;
 try {
     $equipments = new EquipmentsHandler();

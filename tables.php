@@ -1,15 +1,18 @@
 <?php
-    require_once __DIR__ . '/database.php';
-    class TablesInfo extends Database {
-        public function __construct() {
+require_once __DIR__ . '/database.php';
+
+class TablesInfo extends Database {
+    public function __construct() {
         parent::__construct();
     }
-        public function create_all_table(){
+
+    public function create_all_table() {
         $tables = "
             CREATE TABLE IF NOT EXISTS borrowers (
                 borrower_id SERIAL PRIMARY KEY,
                 borrower_no VARCHAR(50) UNIQUE NOT NULL,
-                full_name VARCHAR(255) NOT NULL,
+                last_name VARCHAR(255) NOT NULL,
+                first_name VARCHAR(255) NOT NULL, -- Added missing comma here
                 borrower_type VARCHAR(50) NOT NULL
             );
 
@@ -35,17 +38,17 @@
                 quantity INT NOT NULL CHECK (quantity > 0),
                 UNIQUE (borrow_id, equipment_id)
             );
-            ";
+        ";
+
         try {
             $this->pdo->exec($tables);
-            echo "Successfuladd creating tables:";
-
-        } catch (Exception $e) {
+            echo "Successfully created all tables.";
+        } catch (PDOException $e) {
             echo "Error creating tables: " . $e->getMessage();
             exit;
         }
-        }
     }
-    $all_tables = new Tablesinfo();
-    $all_tables->create_all_table();
-    
+}
+
+$all_tables = new TablesInfo();
+$all_tables->create_all_table();

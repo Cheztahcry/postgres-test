@@ -35,21 +35,16 @@
     }catch (\PDOException $e) {
         die("Something went wrong. Please check back later.");
     }
-    
     }
     public function show_borrowers(){
     try{
         $borrower = new BorrowersInfo();
         $borrowers_list = $borrower->show_borrowers();
-        return $borrowers_list;
-        
+        return $borrowers_list; 
     }catch (\PDOException $e) {
-        die("Something went wrong. Please check back later.");
+        die("Something went wrong with fetching borrowers data. Please check back later.");
     }
-    
     }
-    
-
 } 
 
 ?>

@@ -10,7 +10,7 @@
             try {
             $this->pdo->beginTransaction();
             $stmtStudent = $this->pdo->prepare("
-                INSERT INTO {$this->query_config['tables']['borrowers']} (borrower_no, first_name, last_name, borrower_type)
+                INSERT INTO {$this->table} (borrower_no, first_name, last_name, borrower_type)
                 VALUES (:borrower_no, :first_name, :last_name, :borrower_type) RETURNING borrower_id
             ");
             $stmtStudent->execute([
@@ -37,7 +37,7 @@
         }
         }
         public function show_borrowerinfo($uid) {
-            $sql = "SELECT * FROM {$this->query_config['tables']['borrowers']} WHERE borrower_id = ? LIMIT 1";
+            $sql = "SELECT * FROM `{$this->query_config['tables']['borrowers']}` WHERE borrower_id = ? LIMIT 1";
             $stmt = $this->pdo->prepare($sql);          
             $stmt->execute([$uid]);
             $user = $stmt->fetch(PDO::FETCH_OBJ);

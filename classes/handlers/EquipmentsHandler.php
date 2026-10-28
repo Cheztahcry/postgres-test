@@ -1,9 +1,8 @@
 <?php
     namespace Handlers;
     use Services\EquipmentsInfo;
-    
     class EquipmentsHandler{
-    public function update_equipments($input){
+    public function update_equipmets($input){
     try{
         $equipments_info = new EquipmentsInfo();
         $equipment_id = ($_POST['equipment_id'] ?? '');

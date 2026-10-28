@@ -1,0 +1,35 @@
+[29-Oct-2026 00:51:10 Asia/Manila] Database: SQLSTATE[42703]: Undefined column: 7 ERROR:  column "borrowe_id" does not exist
+LINE 1: SELECT borrowe_id, first_name, last_name, borrower_type FROM...
+               ^
+HINT:  Perhaps you meant to reference the column "borrow_transactions.borrow_id" or the column "borrow_transactions.borrower_id".
+[29-Oct-2026 00:51:28 Asia/Manila] Database: SQLSTATE[42703]: Undefined column: 7 ERROR:  column "first_name" does not exist
+LINE 1: SELECT borrower_id, first_name, last_name, borrower_type FRO...
+                            ^
+[29-Oct-2026 00:55:12 Asia/Manila] PHP Fatal error:  Uncaught Error: Call to undefined method Services\BorrowersInfo::show_borrowers_info() in /var/www/html/classes/handlers/BorrowersHandler.php:46
+Stack trace:
+#0 /var/www/html/public/index.php(10): Handlers\BorrowersHandler->show_borrowers()
+#1 {main}
+  thrown in /var/www/html/classes/handlers/BorrowersHandler.php on line 46
+[29-Oct-2026 00:55:14 Asia/Manila] PHP Fatal error:  Uncaught Error: Call to undefined method Services\BorrowersInfo::show_borrowers_info() in /var/www/html/classes/handlers/BorrowersHandler.php:46
+Stack trace:
+#0 /var/www/html/public/index.php(10): Handlers\BorrowersHandler->show_borrowers()
+#1 {main}
+  thrown in /var/www/html/classes/handlers/BorrowersHandler.php on line 46
+[29-Oct-2026 00:55:45 Asia/Manila] PHP Fatal error:  Uncaught ArgumentCountError: Too few arguments to function Services\BorrowersInfo::show_borrowerinfo(), 0 passed in /var/www/html/classes/handlers/BorrowersHandler.php on line 46 and exactly 1 expected in /var/www/html/classes/services/BorrowersInfo.php:39
+Stack trace:
+#0 /var/www/html/classes/handlers/BorrowersHandler.php(46): Services\BorrowersInfo->show_borrowerinfo()
+#1 /var/www/html/public/index.php(10): Handlers\BorrowersHandler->show_borrowers()
+#2 {main}
+  thrown in /var/www/html/classes/services/BorrowersInfo.php on line 39
+[29-Oct-2026 00:55:46 Asia/Manila] PHP Fatal error:  Uncaught ArgumentCountError: Too few arguments to function Services\BorrowersInfo::show_borrowerinfo(), 0 passed in /var/www/html/classes/handlers/BorrowersHandler.php on line 46 and exactly 1 expected in /var/www/html/classes/services/BorrowersInfo.php:39
+Stack trace:
+#0 /var/www/html/classes/handlers/BorrowersHandler.php(46): Services\BorrowersInfo->show_borrowerinfo()
+#1 /var/www/html/public/index.php(10): Handlers\BorrowersHandler->show_borrowers()
+#2 {main}
+  thrown in /var/www/html/classes/services/BorrowersInfo.php on line 39
+[29-Oct-2026 00:56:50 Asia/Manila] PHP Fatal error:  Uncaught ArgumentCountError: Too few arguments to function Services\BorrowersInfo::show_borrowerinfo(), 0 passed in /var/www/html/classes/handlers/BorrowersHandler.php on line 46 and exactly 1 expected in /var/www/html/classes/services/BorrowersInfo.php:39
+Stack trace:
+#0 /var/www/html/classes/handlers/BorrowersHandler.php(46): Services\BorrowersInfo->show_borrowerinfo()
+#1 /var/www/html/public/index.php(10): Handlers\BorrowersHandler->show_borrowers()
+#2 {main}
+  thrown in /var/www/html/classes/services/BorrowersInfo.php on line 39

@@ -1,8 +1,7 @@
 <?php
-require_once __DIR__ . '/vendor/autoload.php';
+require_once dirname(__DIR__, 1) . '/vendor/autoload.php';
 use Handlers\BorrowersHandler;
 try {
-    
     $borrowers_info = new BorrowersHandler();
     $borrowers = $borrowers_info->show_borrowers();
 }catch(\PDOException $e){
@@ -64,7 +63,7 @@ try {
                 <?php if ($borrowers && count($borrowers) > 0): ?>
                 <?php foreach ($borrowers as $row): ?>           
                 <tr>
-                    <td><?= htmlspecialchars($row->borrower_no) ?></td>
+                    <td><?= htmlspecialchars($row->borrower_id) ?></td>
                     <td><?= htmlspecialchars($row->first_name) ?></td>
                     <td><?= htmlspecialchars($row->last_name) ?></td>
                     <td><?= htmlspecialchars($row->borrower_type) ?></td>
