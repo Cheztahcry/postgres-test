@@ -1,12 +1,15 @@
 <?php
+require_once __DIR__ . '/vendor/autoload.php';
+use Handlers\BorrowersHandler;
+use Handlers\EquipmentsHandler;
 try {
-    include_once __DIR__ . '/equipments_info_class.php';
-    $equipments_info = new EquipmentsInfo();
-    $equipments = $equipments_info->show_equipments();
+    $equipments = new EquipmentsHandler();
+    $equipments = $equipments->show_equipments();
 }catch(\PDOException $e){
     header("Location: error_page.php");
     exit;
 }
+
 ?>
 
 <!DOCTYPE html>

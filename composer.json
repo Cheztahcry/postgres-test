@@ -1,0 +1,8 @@
+{
+    "autoload": {
+        "psr-4": {
+            "Handlers\\": "classes/handlers/",
+            "Services\\": "classes/services/"
+        }
+    }
+}

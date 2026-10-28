@@ -1,6 +1,8 @@
 <?php
-    require_once __DIR__ . '/database.php';
-    class EquipmentsInfo extends Database {
+    namespace Services;
+    use PDO;
+    require_once dirname(__DIR__, 2) . '/database.php';
+    class EquipmentsInfo extends \Database {
         public function __construct() {
         parent::__construct();
     }

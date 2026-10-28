@@ -1,6 +1,10 @@
-<?php 
-    require_once __DIR__ . '/borrowers_info_class.php';
-    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
+<?php
+    namespace Handlers;
+    use Services\BorrowersInfo;
+    class BorrowersHandler{
+    public function insert_borrowers($input){
+    try{
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
         $last_name  = trim($_POST['last_name'] ?? '');
         $first_name  = trim($_POST['first_name'] ?? '');
         $borrower_type = $_POST['borrower_type'] ?? null;
@@ -17,9 +21,6 @@
                 die("Invalid date format provided.");
             }
         }
-
-        
-
         $borrower_info = [ 
             "first_name"   => $first_name,
             "last_name"    => $last_name,
@@ -30,5 +31,25 @@
         $borrower->insert_student_info($borrower_info);
         header("Location: index.php");
         exit;
-}
+    }
+    }catch (\PDOException $e) {
+        die("Something went wrong. Please check back later.");
+    }
+    
+    }
+    public function show_borrowers(){
+    try{
+        $borrower = new BorrowersInfo();
+        $borrowers_list = $borrower->show_borrowers();
+        return $borrowers_list;
+        
+    }catch (\PDOException $e) {
+        die("Something went wrong. Please check back later.");
+    }
+    
+    }
+    
+
+} 
+
 ?>

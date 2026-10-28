@@ -1,8 +1,9 @@
 <?php
-
+require_once __DIR__ . '/vendor/autoload.php';
+use Handlers\BorrowersHandler;
 try {
-    include_once __DIR__ . '/borrowers_info_class.php';
-    $borrowers_info = new BorrowersInfo();
+    
+    $borrowers_info = new BorrowersHandler();
     $borrowers = $borrowers_info->show_borrowers();
 }catch(\PDOException $e){
     header("Location: error_page.php");
