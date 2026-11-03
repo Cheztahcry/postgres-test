@@ -1,11 +1,17 @@
 <?php
+require_once __DIR__ . '/vendor/autoload.php';
+use Services\BorrowersInfo;
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    include_once __DIR__ . '/borrowers_info_class.php';
-    $borrower_id = trim(($_POST['borrower_no'] ?? null));
+try {
+    $borrower_id = trim($_POST['borrower_no'] ?? '');
     $borrower_info = new BorrowersInfo();
     $borrower = $borrower_info->show_borrowerinfo($borrower_id);
-    $transactions = $borrower_info->show_transactions($borrower_id);
-    
+
+}catch(\PDOException $e){
+    echo($borrower_id);
+    header("Location: error_page.php");
+    exit;
+}   
 }
 else {
     header("Location: index.php");
@@ -45,7 +51,7 @@ else {
                 </div>
 
                     
-
+                    
                     <div class="acct-panel" id="acct-info-content">
                         <div class="button-row">
                             <button type="button" id="edit" class="secondary-btn">Edit Information</button>

@@ -1,5 +1,6 @@
 <?php
     namespace Handlers;
+    session_start();
     use Services\BorrowersInfo;
     class BorrowersHandler{
     public function insert_borrowers($input){
@@ -35,21 +36,7 @@
     }catch (\PDOException $e) {
         die("Something went wrong. Please check back later.");
     }
-    
     }
-    public function show_borrowers(){
-    try{
-        $borrower = new BorrowersInfo();
-        $borrowers_list = $borrower->show_borrowers();
-        return $borrowers_list;
-        
-    }catch (\PDOException $e) {
-        die("Something went wrong. Please check back later.");
-    }
-    
-    }
-    
-
 } 
 
 ?>

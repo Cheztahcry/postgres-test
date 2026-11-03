@@ -1,9 +1,8 @@
 <?php
 require_once __DIR__ . '/vendor/autoload.php';
-use Handlers\BorrowersHandler;
+use Services\BorrowersInfo;
 try {
-    
-    $borrowers_info = new BorrowersHandler();
+    $borrowers_info = new BorrowersInfo();
     $borrowers = $borrowers_info->show_borrowers();
 }catch(\PDOException $e){
     header("Location: error_page.php");
@@ -70,7 +69,7 @@ try {
                     <td><?= htmlspecialchars($row->borrower_type) ?></td>
                     <td class="action-cell">
                         <form action="borrowers_dashboard.php" method="POST">
-                        <button type="submit" name ="borrower_no" class="action-btn inquire-btn" value = "<?= htmlspecialchars($row->borrower_id) ?>">More Info</button>
+                        <button type="submit" name ="borrower_no" class="action-btn inquire-btn" value = "<?= htmlspecialchars($row->borrower_no) ?>">More Info</button>
                         </form>
                     </td>
                 </tr>

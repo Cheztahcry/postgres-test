@@ -10,7 +10,7 @@
             try {
             $this->pdo->beginTransaction();
             $stmtStudent = $this->pdo->prepare("
-                INSERT INTO {$this->query_config['tables']['borrowers']} (borrower_no, first_name, last_name, borrower_type)
+                INSERT INTO {$this->table} (borrower_no, first_name, last_name, borrower_type)
                 VALUES (:borrower_no, :first_name, :last_name, :borrower_type) RETURNING borrower_id
             ");
             $stmtStudent->execute([
@@ -37,26 +37,38 @@
         }
         }
         public function show_borrowerinfo($uid) {
-            $sql = "SELECT * FROM {$this->query_config['tables']['borrowers']} WHERE borrower_id = ? LIMIT 1";
+            try{
+            $sql = "SELECT borrower_no, last_name, first_name, borrower_type FROM {$this->query_config['tables']['borrowers']} WHERE borrower_no = ? LIMIT 1";
             $stmt = $this->pdo->prepare($sql);          
             $stmt->execute([$uid]);
             $user = $stmt->fetch(PDO::FETCH_OBJ);
             return $user;
+            }catch (\PDOException $e) {
+                die("Something went wrong with fetching borrowers data. Please check back later.");
+            }
         }
         public function show_transactions($uid) {
+            try{
             $sql = "SELECT * FROM {$this->query_config['tables']['borrow_transactions']} WHERE borrower_id = :uid";
             $stmt = $this->pdo->prepare($sql);          
             $stmt->execute([
                 'uid' => $uid]);
             $user = $stmt->fetchAll(PDO::FETCH_OBJ);
             return $user;
+            }catch (\PDOException $e) {
+                die("Something went wrong with fetching borrowers data. Please check back later.");
+            }
         }
         public function show_borrowers() {
+            try{
             $sql = "SELECT * FROM {$this->query_config['tables']['borrowers']}";
             $stmt = $this->pdo->prepare($sql);          
             $stmt->execute();
             $user = $stmt->fetchAll(PDO::FETCH_OBJ);
             return $user;
+            }catch (\PDOException $e) {
+                die("Something went wrong with fetching borrowers data. Please check back later.");
+            }
         }
 
 
