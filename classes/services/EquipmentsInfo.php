@@ -22,6 +22,13 @@
             ]);
             return $stmt->execute($params);
         }
+        public function show_borrowed_equipments() {
+            $sql = "SELECT borrow_item_id, borrow_id, equipment_id, quantity FROM {$this->query_config['tables']['borrow_items']}";
+            $stmt = $this->pdo->prepare($sql);          
+            $stmt->execute();
+            $user = $stmt->fetchAll(PDO::FETCH_OBJ);
+            return $user;
+        }
     }
     
             

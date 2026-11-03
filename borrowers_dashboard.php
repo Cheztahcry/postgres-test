@@ -1,14 +1,14 @@
 <?php
 require_once __DIR__ . '/vendor/autoload.php';
-use Services\BorrowersInfo;
 use Services\EquipmentsInfo;
+use Services\BorrowersInfo;
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 try {
     $borrower_id = trim($_POST['borrower_no'] ?? '');
-
     $borrower_info = new BorrowersInfo();
     $borrower = $borrower_info->show_borrowerinfo($borrower_id);
-    $transactions = null;
+    $equipments = new EquipmentsInfo();
+    $borrowed_equipments = $equipments->show_borrowed_equipments();
 }catch(\PDOException $e){
     echo($borrower_id);
     header("Location: error_page.php");
@@ -81,31 +81,41 @@ else {
 
             <div class="acct-panel" id="acct-tran-content">
                 <div class="transaction-summary">
-                    <h2>Student Information</h2>
+                    <h2>Borrower Information</h2>
                 </div>
                 <div class="transaction-card">
                     <div class="transaction-card__header">
+                        <span>Borrow Item ID</span>
+                        <span>Borrow ID</span>
                         <span>Equipment ID</span>
-                        <span>Borrowed Date</span>
-                        <span>Due Date</span>
-                        <span>Status</span>
+                        <span>Quantity</span>
                     </div>
                 </div>
-                <?php if ($transactions): ?>
-                    <?php foreach ($transactions as $transac): ?>
+                <?php if ($borrowed_equipments): ?>
+                    <?php foreach ($borrowed_equipments as $equipment): ?>
+                        
                         <div class="transaction-card__row">
-                            <span class="transaction-card__value"><?= htmlspecialchars($transac->borrow_id) ?></span>
-                            <span class="transaction-card__value"><?= htmlspecialchars($transac->borrow_date) ?></span>
-                            <span class="transaction-card__value"><?= htmlspecialchars($transac->due_date) ?></span>
-                            <span class="transaction-card__value"><?= htmlspecialchars($transac->status) ?></span>
+                            <span class="transaction-card__value"><?= htmlspecialchars($equipment->borrow_item_id) ?></span>
+                            <span class="transaction-card__value"><?= htmlspecialchars($equipment->borrow_id) ?></span>
+                            <span class="transaction-card__value"><?= htmlspecialchars($equipment->equipment_id) ?></span>
+                            <span class="transaction-card__value"><?= htmlspecialchars($equipment->quantity) ?></span>
                             <span class="transaction-card__actions">—</span>
                         </div>
+                       
                     <?php endforeach; ?>
+                      <form action="/w_xaamp/classes/handlers/ArchivingHandler.php" method="POST" style="display: inline;">
+                        <input type="hidden" name="borrower_no" value="<?= htmlspecialchars($borrower->borrower_no) ?>">
+                        <button type="submit" id="archive-account" class="archive-btn" onclick="return confirm('Are you sure you want to archive this borrower account?');">
+                            Archive Account
+                        </button>
+                    </form>
                 <?php else: ?>
                     <div class="transaction-card__row">
-                            <span class="transaction-card__actions">No Transaction Record</span>
-                        </div>
+                        <span class="transaction-card__actions">No Transaction Record</span>
+                    </div>
                 <?php endif; ?>
+               
+                
             </div>
 
         </div>

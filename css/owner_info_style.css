@@ -70,6 +70,14 @@ body {
     gap: 16px;
     flex-wrap: wrap;
     align-items: center;
+    width: 100%;
+    box-sizing: border-box;
+}
+.field-row input[type="text"] {
+    flex: 1 1 0;
+    min-width: 0; /* Prevents inputs from expanding past container bounds */
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .field-row label {
@@ -123,7 +131,10 @@ select {
 input[type="date"] {
     cursor: pointer;
 }
-
+.field-row input[type="text"] {
+    flex: 1 1 0;
+    width: auto; /* Overrides width: 100% so inputs sit side-by-side */
+}
 .field-row input[type="number"] {
     width: 90px;
     flex-shrink: 0;
@@ -168,10 +179,52 @@ input[type="date"] {
     color: #D97706;
     border-bottom-color: #D97706;
 }
+.acct-tab-button.status-option {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #F1F5F9;
+    color: #475569;
+}
+
+.acct-tab-button.status-option input[type="radio"] {
+    display: none;
+}
+
+.acct-tab-button.status-option:has(input:checked) {
+    background: #D97706;
+    color: #FFFFFF;
+}
+
+.acct-tab-button.status-option:has(input:checked) span {
+    color: #FFFFFF;
+}
 
 /* Dashboard Panels & Transaction Table */
 .acct-panel {
     display: block;
+}
+button.archive-btn,
+.archive-btn {
+    min-width: 140px;
+    height: 46px;
+    padding: 0 20px;
+    border: 1px solid #FECACA;
+    border-radius: 10px;
+    background: #FEF2F2;
+    color: #DC2626;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
+}
+
+button.archive-btn:hover,
+.archive-btn:hover {
+    background: #DC2626;
+    color: #FFFFFF;
+    border-color: #DC2626;
+    transform: translateY(-1px);
 }
 
 .transaction-summary {

@@ -119,51 +119,44 @@
             $stmt = $this->pdo->query($sql);
             return $stmt->fetchAll(PDO::FETCH_OBJ);
         }
-        public function archiveTransaction(int $borrowId, string $reason = 'Completed & Filed'): bool {
-        // 1. Fetch full transaction details & borrowed items as JSON
-        $sqlFetch = "
-            SELECT jsonb_build_object(
-                'borrow_id', bt.borrow_id,
-                'borrower_no', b.borrower_no,
-                'borrower_name', b.first_name || ' ' || b.last_name,
-                'borrow_date', bt.borrow_date,
-                'due_date', bt.due_date,
-                'items', jsonb_agg(
-                    jsonb_build_object(
-                        'equipment_id', bi.equipment_id,
-                        'quantity', bi.quantity
-                    )
+        public function archiveTransaction(string $borrowerNo) {
+        try {
+            $this->pdo->beginTransaction();
+
+            // 1. Copy record into archive
+            $stmtArchive = $this->pdo->prepare("INSERT INTO archive (borrower_no) VALUES (?)");
+            $stmtArchive->execute([$borrowerNo]);
+
+            // 2. Delete child item records first
+            $stmtItems = $this->pdo->prepare("
+                DELETE FROM borrow_items 
+                WHERE borrow_id IN (
+                    SELECT bt.borrow_id 
+                    FROM borrow_transactions bt 
+                    JOIN borrowers b ON b.borrower_id = bt.borrower_id 
+                    WHERE b.borrower_no = ?
                 )
-            ) AS payload,
-            b.borrower_no
-            FROM borrow_transactions bt
-            JOIN borrowers b ON b.borrower_id = bt.borrower_id
-            JOIN borrow_items bi ON bi.borrow_id = bt.borrow_id
-            WHERE bt.borrow_id = ?
-            GROUP BY bt.borrow_id, b.borrower_no, b.first_name, b.last_name;
-        ";
+            ");
+            $stmtItems->execute([$borrowerNo]);
 
-        $stmt = $this->pdo->prepare($sqlFetch);
-        $stmt->execute([$borrowId]);
-        $data = $stmt->fetch(PDO::FETCH_ASSOC);
+            // 3. Delete child transaction records
+            $stmtTrans = $this->pdo->prepare("
+                DELETE FROM borrow_transactions 
+                WHERE borrower_id = (SELECT borrower_id FROM borrowers WHERE borrower_no = ?)
+            ");
+            $stmtTrans->execute([$borrowerNo]);
 
-        if (!$data) {
-            return false;
+            // 4. Delete parent borrower record
+            $stmtDelete = $this->pdo->prepare("DELETE FROM borrowers WHERE borrower_no = ?");
+            $stmtDelete->execute([$borrowerNo]);
+
+            $this->pdo->commit();
+        } catch (\Throwable $e) {
+            if ($this->pdo->inTransaction()) {
+                $this->pdo->rollBack();
+            }
+            throw $e;
         }
-
-        // 2. Insert snapshot into the central archive table
-        $sqlArchive = "
-            INSERT INTO archive (entity_type, original_id, borrower_no, record_data, archive_reason)
-            VALUES ('borrow_transaction', ?, ?, ?::jsonb, ?)
-        ";
-
-        $archiveStmt = $this->pdo->prepare($sqlArchive);
-        return $archiveStmt->execute([
-            $borrowId,
-            $data['borrower_no'],
-            $data['payload'],
-            $reason
-        ]);
     }
 
 
