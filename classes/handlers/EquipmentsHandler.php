@@ -14,7 +14,6 @@
     }catch (\PDOException $e) {
         die("Something went wrong. Please check back later.");
     }
-    
     }
     public function show_equipments(){
     try{
@@ -25,8 +24,7 @@
         die("Something went wrong. Please check back later.");
     }
     
-    }
-    
+    }  
 } 
     
 

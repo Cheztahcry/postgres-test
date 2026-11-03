@@ -1,9 +1,9 @@
 <?php
 require_once __DIR__ . '/vendor/autoload.php';
-use Handlers\BorrowersHandler;
-use Handlers\EquipmentsHandler;
+
+use Services\EquipmentsInfo;
 try {
-    $equipments = new EquipmentsHandler();
+    $equipments = new EquipmentsInfo();
     $equipments = $equipments->show_equipments();
 }catch(\PDOException $e){
     header("Location: error_page.php");
@@ -28,7 +28,7 @@ try {
                 </nav>
             </div>
             <h1>Borrower Information</h1>
-            <form action="borrowers_handler.php" method="post" id="owner-enrollment">
+            <form action="/w_xaamp/classes/handlers/BorrowersHandler.php" method="post" id="owner-enrollment">
                 <div class="field-group">
                     <label>Full Name</label>
                     <div class="field-row">
@@ -67,7 +67,7 @@ try {
                             
                         </select>
                         
-                        <input type="number" name="quantity" min="1" max="<?= htmlspecialchars($row->quantity_available)?>" placeholder="Qty" value="1" style="width: 80px;" required>
+                        <input type="number" name="quantity" min="1"placeholder="Qty" value="1" style="width: 80px;" required>
                         <?php endif; ?>
                     </div>
                 </div>
