@@ -46,6 +46,69 @@
             throw $e; 
         }
         }
+        public function show_borrowed_equipments($borrowerNo) {
+        try {
+            $sql = "SELECT 
+                        bi.borrow_item_id, 
+                        bi.borrow_id, 
+                        bi.equipment_id, 
+                        bi.quantity
+                    FROM borrow_items bi
+                    JOIN borrow_transactions bt ON bi.borrow_id = bt.borrow_id
+                    JOIN borrowers b ON bt.borrower_id = b.borrower_id
+                    WHERE b.borrower_no = ?";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute([$borrowerNo]);
+            return $stmt->fetchAll(PDO::FETCH_OBJ);
+        } catch (\PDOException $e) {
+            error_log("Error fetching borrowed equipment: " . $e->getMessage());
+            return [];
+        }
+        }
+        public function w6_search_borrowers_dynamic(string $input = '', string $borrowerType = '', string $viewMode = 'detailed', int $minCount = 1): array {
+        $searchTerm = '%' . $input . '%';
+
+        if ($viewMode === 'grouped') {
+            $stmt = $this->pdo->prepare("
+                SELECT 
+                    b.borrower_type AS category, 
+                    COUNT(b.borrower_id) AS total_count
+                FROM borrowers b
+                WHERE (
+                    b.first_name ILIKE ? 
+                    OR b.last_name ILIKE ? 
+                    OR CONCAT_WS(' ', b.first_name, b.last_name) ILIKE ? 
+                    OR CAST(b.borrower_no AS TEXT) ILIKE ?
+                )
+                AND (? = '' OR b.borrower_type = ?)
+                GROUP BY b.borrower_type
+                HAVING COUNT(b.borrower_id) >= ?
+                ORDER BY total_count DESC, category ASC
+            ");
+            $stmt->execute([$searchTerm, $searchTerm, $searchTerm, $searchTerm, $borrowerType, $borrowerType, $minCount]);
+        } else {
+            $stmt = $this->pdo->prepare("
+                SELECT DISTINCT 
+                    b.borrower_id, 
+                    b.borrower_no AS borrower_uid, 
+                    b.first_name,
+                    b.last_name,
+                    CONCAT_WS(' ', b.first_name, b.last_name) AS full_name, 
+                    b.borrower_type AS category
+                FROM borrowers b
+                WHERE (
+                    b.first_name ILIKE ? 
+                    OR b.last_name ILIKE ? 
+                    OR CONCAT_WS(' ', b.first_name, b.last_name) ILIKE ? 
+                    OR CAST(b.borrower_no AS TEXT) ILIKE ?
+                )
+                AND (? = '' OR b.borrower_type = ?)
+                ORDER BY b.last_name ASC, b.first_name ASC
+            ");
+            $stmt->execute([$searchTerm, $searchTerm, $searchTerm, $searchTerm, $borrowerType, $borrowerType]);
+        }
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
+        }
         public function show_borrowerinfo($uid) {
             try{
             $sql = "SELECT borrower_no, last_name, first_name, borrower_type FROM {$this->query_config['tables']['borrowers']} WHERE borrower_no = ? LIMIT 1";
@@ -123,11 +186,11 @@
         try {
             $this->pdo->beginTransaction();
 
-            // 1. Copy record into archive
-            $stmtArchive = $this->pdo->prepare("INSERT INTO archive (borrower_no) VALUES (?)");
-            $stmtArchive->execute([$borrowerNo]);
+            // 1. Log action as 'ARCHIVE' (7 chars <= 10 limit)
+            $stmtArchive = $this->pdo->prepare("INSERT INTO archive (borrow_item_id, operation_type) VALUES (NULL, ?)");
+            $stmtArchive->execute(["ARCHIVE"]);
 
-            // 2. Delete child item records first
+            // 2. Delete child item records
             $stmtItems = $this->pdo->prepare("
                 DELETE FROM borrow_items 
                 WHERE borrow_id IN (
@@ -139,14 +202,14 @@
             ");
             $stmtItems->execute([$borrowerNo]);
 
-            // 3. Delete child transaction records
+            // 3. Delete parent transaction records
             $stmtTrans = $this->pdo->prepare("
                 DELETE FROM borrow_transactions 
                 WHERE borrower_id = (SELECT borrower_id FROM borrowers WHERE borrower_no = ?)
             ");
             $stmtTrans->execute([$borrowerNo]);
 
-            // 4. Delete parent borrower record
+            // 4. Delete borrower record
             $stmtDelete = $this->pdo->prepare("DELETE FROM borrowers WHERE borrower_no = ?");
             $stmtDelete->execute([$borrowerNo]);
 
@@ -157,7 +220,7 @@
             }
             throw $e;
         }
-    }
+        }
 
 
     }

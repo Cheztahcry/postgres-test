@@ -92,7 +92,6 @@ class SearchHandler {
                     $minCount     = (int) ($_POST['min_count'] ?? 1);
 
                     $results = $search->w6_search_borrowers_dynamic($input, $borrowerType, $viewMode, $minCount);
-
                     echo json_encode([
                         'mode' => $viewMode,
                         'data' => $results ?: []
@@ -100,11 +99,15 @@ class SearchHandler {
                     exit();
             }
         } catch (\Throwable $e) {
-            error_log("Search Error: " . $e->getMessage());
             http_response_code(500);
-            echo json_encode(['error' => 'Database query failed']);
-            exit();
+            echo json_encode([
+                'error' => 'Database query failed',
+                'message' => $e->getMessage(), // Exposes exact PDO or PHP error
+                'file' => $e->getFile(),
+                'line' => $e->getLine()
+            ]);
         }
+        exit();
     }
 }
 

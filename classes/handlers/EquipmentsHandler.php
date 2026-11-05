@@ -47,6 +47,7 @@ class EquipmentsHandler {
             die("Database Action Error: " . $e->getMessage());
         }
     }
+    
 }
 
 // Handler execution block

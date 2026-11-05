@@ -65,4 +65,5 @@ class EquipmentsInfo extends \Database {
             throw $e;
         }
     }
+    
 }

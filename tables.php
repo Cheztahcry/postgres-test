@@ -21,7 +21,8 @@ class TablesInfo extends Database {
         CREATE TABLE borrowers (
             borrower_id SERIAL PRIMARY KEY,
             borrower_no VARCHAR(50) UNIQUE NOT NULL,
-            full_name VARCHAR(255) NOT NULL,
+            first_name VARCHAR(255) NOT NULL,
+            last_name VARCHAR(255) NOT NULL,
             borrower_type VARCHAR(50) NOT NULL
         );
 
@@ -68,7 +69,8 @@ class TablesInfo extends Database {
             bt.borrow_id,
             b.borrower_id,
             b.borrower_no,
-            b.full_name,
+            b.first_name,
+            b,last_name,
             b.borrower_type,
             e.equipment_id,
             e.property_no,

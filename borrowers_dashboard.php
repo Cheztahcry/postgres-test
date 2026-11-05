@@ -7,8 +7,7 @@ try {
     $borrower_id = trim($_POST['borrower_no'] ?? '');
     $borrower_info = new BorrowersInfo();
     $borrower = $borrower_info->show_borrowerinfo($borrower_id);
-    $equipments = new EquipmentsInfo();
-    $borrowed_equipments = $equipments->show_borrowed_equipments();
+    $borrowed_equipments = $borrower_info->show_borrowed_equipments($borrower_id);
 }catch(\PDOException $e){
     echo($borrower_id);
     header("Location: error_page.php");
