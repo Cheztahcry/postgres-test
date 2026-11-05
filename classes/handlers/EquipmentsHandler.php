@@ -1,5 +1,6 @@
 <?php
     namespace Handlers;
+    require_once dirname(__DIR__, 2) . '/vendor/autoload.php';
     use Services\EquipmentsInfo;
     
     class EquipmentsHandler{
@@ -26,10 +27,4 @@
     
     }  
 } 
-    
-
-
-
-
-
 ?>

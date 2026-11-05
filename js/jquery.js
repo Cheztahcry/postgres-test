@@ -1,32 +1,61 @@
-$(document).ready(function(){
-    // Move these INSIDE the ready function so they don't crash
-    const search_bar = document.getElementById("search_bar");
-    const search_result = document.getElementById("search-results");
-    const search_button = document.getElementById('search-button');
-    
-    // Grab the dashboards so we can hide them during a search
-    const student_dashboard = document.getElementById('student-dashboard');
+$(document).ready(function() {
+    const $searchBar = $('#search_bar');
+    const $searchResults = $('#search-results');
+    const $searchButton = $('#search-button');
+    const $studentDashboard = $('#student-dashboard');
 
-    $(search_bar).keyup(function(){
-        var input = $(this).val();
-        
-        if (input != ""){
+    // Reusable function to execute the AJAX search
+    function performSearch() {
+        const input = $searchBar.val().trim();
+
+        if (input !== "") {
             $.ajax({
-                url:"search_class.php",
-                method:"POST",
-                data:{input:input},
-                success:function(data){
-                    search_button.addEventListener("click", function(){
-                        $(search_result).html(data).show();
-                        $(student_dashboard).css("display", "none");
-                    }) 
-                    
-                }   
+                url: "classes/handlers/SearchHandler.php",
+                method: "POST",
+                data: { input: input },
+                dataType: "json",
+                success: function(data) {
+                    // Switch views: hide main dashboard, show search container
+                    $studentDashboard.hide();
+                    $searchResults.show();
+
+                    const $tbody = $searchResults.find('table tbody').empty();
+                    const $noResults = $searchResults.find('.no-results-card');
+                    const $table = $searchResults.find('table');
+
+                    if (!data || data.length === 0) {
+                        $table.hide();
+                        $noResults.show();
+                        return;
+                    }
+
+                    $table.show();
+                    $noResults.hide();
+
+                    // Iterate over JSON array and construct table rows
+                    $.each(data, function(index, row) {
+                        const tr = `
+                            <tr>
+                                <td>${row.last_name || ''}</td>
+                                <td>${row.first_name || ''}</td>
+                                <td class="action-cell">
+                                    <button type="button" class="action-btn inquire-btn">More Info</button>
+                                </td>
+                            </tr>
+                        `;
+                        $tbody.append(tr);
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error("Search AJAX Error:", error);
+                }
             });
         } else {
-            
-            $(search_result).css("display", "none");
-            $(student_dashboard).css("display", "block");
+            // Restore default view when input is cleared
+            $searchResults.hide();
+            $studentDashboard.show();
         }
-    });
+    }
+    // Trigger search on explicit button click
+    $searchButton.on('click', performSearch);
 });

@@ -64,8 +64,8 @@ try {
                 <?php foreach ($borrowers as $row): ?>           
                 <tr>
                     <td><?= htmlspecialchars($row->borrower_no) ?></td>
-                    <td><?= htmlspecialchars($row->first_name) ?></td>
                     <td><?= htmlspecialchars($row->last_name) ?></td>
+                    <td><?= htmlspecialchars($row->first_name) ?></td>
                     <td><?= htmlspecialchars($row->borrower_type) ?></td>
                     <td class="action-cell">
                         <form action="borrowers_dashboard.php" method="POST">
@@ -87,8 +87,32 @@ try {
         </div>
         
     </div>
-    <div id = "search-results">
-        
+    <div id="search-results">
+        <div class="student-dashboard" id="student-dashboard">
+            <div class="dashboard-container">
+                
+                <!-- Dynamic Results Table -->
+                <table class="results-table">
+                    <thead>
+                        <tr>
+                            <th>Last Name</th>
+                            <th>First Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- jQuery $.each() appends <tr> elements here -->
+                    </tbody>
+                </table>
+
+                <!-- Empty State Card (Hidden by default, toggled by JS when array is empty) -->
+                <div class="no-results-card" style="display: none;">
+                    <div class="no-results-icon" aria-hidden="true">🔎</div>
+                    <h3>No results found</h3>
+                    <p>Try searching by another borrower number, name, or category.</p>
+                </div>
+
+            </div>
+        </div>
     </div>
         
 </body>
