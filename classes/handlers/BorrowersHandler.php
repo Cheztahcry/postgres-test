@@ -88,6 +88,7 @@ class BorrowersHandler {
             die("Delete Error: " . $e->getMessage());
         }
     }
+    
 }
 
 // --- EXECUTION BLOCK ---
